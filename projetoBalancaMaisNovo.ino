@@ -140,7 +140,7 @@ void loop() {
     enviaDados();
   }
 
-  teclado(); // chama a função dos botões
+  botoes(); // chama a função dos botões
 
   switch (numMenu) {
 
@@ -152,7 +152,7 @@ void loop() {
 }
 
 // recolhe as respostas dos botões
-void teclado() {
+void botoes() {
 
   if (!digitalRead(BOTAO_DIREITA) && subMenu == 1) {
 
