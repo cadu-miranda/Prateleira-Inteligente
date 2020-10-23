@@ -32,7 +32,7 @@ $data ="
 
 <body>
     <h2 style='font-family: Verdana, Geneva, Tahoma, sans-serif; color: blueviolet; text-align: center;'>Protótipo
-        de bancada inteligente com aplicação de IoT alimentado pelo Arduino</h2>
+        de prateleira inteligente com Arduino</h2>
     <p
         style='font-family: Verdana, Geneva, Tahoma, sans-serif; color: blueviolet; text-align: center; font-size: 14pt;'>
         Integrantes:
