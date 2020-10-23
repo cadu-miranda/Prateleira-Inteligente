@@ -41,7 +41,7 @@ HX711 balanca1, balanca2;
 float fatorCalibracaoB1 = 455670, fatorCalibracaoB2 = 455670; // variáveis de calibração
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // endereço MAC do módulo ethernet shield
-char servidor[] = "prj1.xyz";                        // servidor onde serão armazenados os dados
+char servidor[] = "";                        // servidor onde serão armazenados os dados
 
 byte numMenu = 1,      // referência à camada do menu do LCD
      subMenu = 1,      // referência à camada do submenu do LCD
@@ -451,7 +451,7 @@ void enviaDados() {
   if (client.connect(servidor, 80)) {
 
     client.println("POST /main.php HTTP/1.1");
-    client.println("Host: prj1.xyz");
+    client.println("Host: {char servidor[]}");
     client.println("Content-Type: application/x-www-form-urlencoded;");
     client.print("Content-Length: ");
     client.println(dadosPost.length());
