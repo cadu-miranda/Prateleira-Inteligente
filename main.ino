@@ -1,8 +1,8 @@
 /*
    Trabalho de Graduação - Gestão da Tecnologia da Informação
-   Integrantes: Carlos E. Miranda e Thiago T. Yara
+   Integrantes: Carlos E. Miranda e Thiago L. Yara
    Instituição de ensino: Fatec-Itu.
-   Última revisão do código: 22/10/2020
+   Última revisão do código: 31/10/2020
 */
 
 // inclusão das bibliotecas
@@ -33,15 +33,14 @@
 // definição do número da camada de menus da tela LCD
 #define NUM_MAX_MENU 3
 
-// criação dos objetos para as classes
-LiquidCrystal_I2C lcd(LCD_ADDR, COL_NUM, ROW_NUM); 
-EthernetClient client;                             
-HX711 balanca1, balanca2;                          
+LiquidCrystal_I2C lcd(LCD_ADDR, COL_NUM, ROW_NUM); // criação de objeto para a classe LiquidCrystal_I2C
+EthernetClient client;                             // criação de objeto para a classe EthernetClient
+HX711 balanca1, balanca2;                          // criação de objeto para a classe HX711
 
 float fatorCalibracaoB1 = 455670, fatorCalibracaoB2 = 455670; // variáveis de calibração
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // endereço MAC do módulo ethernet shield
-char servidor[] = "";                        // servidor onde serão armazenados os dados
+char servidor[] = "servidor";                        // servidor onde serão armazenados os dados
 
 byte numMenu = 1,      // referência à camada do menu do LCD
      subMenu = 1,      // referência à camada do submenu do LCD
@@ -64,8 +63,7 @@ float EMB1, EMB2, MAB1, MAB2; // armazena os estoques mínimos e as pesos atuais
 
 String dadosPost; // armazena para ser enviado ao servidor
 
-String baixoEstoqueB1 = "Baixo!", baixoEstoqueB2 = "Baixo!", // variáveis para mostrar "Baixo Estoque"
-Div = "="; // variável para fazer a divisão da string de saída
+String baixoEstoqueB1 = "Baixo!", baixoEstoqueB2 = "Baixo!", Div = "=";
 
 // elementos para serem enviados ao servidor
 String alimentoB1 = "alimentoB1", massaAtualB1 = "massaAtualB1", alimentoB2 = "alimentoB2", massaAtualB2 = "massaAtualB2";
@@ -96,13 +94,12 @@ void setup() {
   lcd.clear();
 
   alocaIP();           // chama função de alocação de IP para módulo Shield
-  
-  dadosPost = alimentoB1 + AB1 + alimentoB2 + AB2; // inicializa os alimentos para serem postados
+
+  dadosPost = alimentoB1 + AB1 + alimentoB2 + AB2;
 }
 
 void loop() {
 
-  // variáveis globais para -> Alimento (AB1 e AB2); Estoque Mínimo (EMB1 e EMB2) e Massa Atual (MAB1 e MAB2) 
   AB1 = posicaoVetorAB1[alimentosB1];
   AB2 = posicaoVetorAB2[alimentosB2];
 
@@ -122,15 +119,15 @@ void loop() {
   else if (MAB1 <= EMB1) {
 
     dadosPost = alimentoB1 + Div + AB1 + Div + baixoEstoqueB1 + Div + AB2 + Div + MAB2;
-    String dadosPost = "alimentoB1" + Div + AB1 + Div + baixoEstoqueB1 + Div + AB2 + Div + String(MAB2, 3); 
-    enviaDados(); 
+    String dadosPost = "alimentoB1" + Div + AB1 + Div + baixoEstoqueB1 + Div + AB2 + Div + String(MAB2, 3); // aloca os elementos para serem enviados ao servidor
+    enviaDados(); // envia os dados para o servidor
   }
 
   else if (MAB2 <= EMB2) {
 
     dadosPost = alimentoB1 + Div + AB1 + Div + MAB1 + Div + AB2 + Div + baixoEstoqueB2;
-    String dadosPost = "alimentoB1" + Div + AB1 + Div + String(MAB1, 3) + Div + AB2 + Div + baixoEstoqueB2;
-    enviaDados();
+    String dadosPost = "alimentoB1" + Div + AB1 + Div + String(MAB1, 3) + Div + AB2 + Div + baixoEstoqueB2; // aloca os elementos para serem enviados ao servidor
+    enviaDados(); // envia os dados para o servidor
   }
 
   else if ((MAB1 > EMB1) && (MAB2 > EMB2)) {
@@ -258,9 +255,9 @@ void menuInfosGerais() {
     case 1:
 
       lcd.setCursor(0, 0);
-      lcd.print("<     Pesos    >");
+      lcd.print("<    Pesos     >");
       lcd.setCursor(0, 1);
-      lcd.print("      Atuais    ");
+      lcd.print("    Atuais      ");
       break;
 
     case 2:
@@ -293,10 +290,10 @@ void alimentoBalancaUm() {
       posicaoVetorAB1 = 5;
   }
 
-  AB1 = posicaoVetorAB1[alimentosB1]; // variável local para o alimento da balança 1
+  AB1 = posicaoVetorAB1[alimentosB1];
 
   lcd.setCursor(0, 0);
-  lcd.print("Alimento B1:    ");
+  lcd.print("Produto B1:     ");
   lcd.setCursor(0, 1);
   lcd.print(AB1);
   lcd.print("                ");
@@ -325,10 +322,10 @@ void alimentoBalancaDois() {
       posicaoVetorAB2 = 5;
   }
 
-  AB2 = posicaoVetorAB2[alimentosB2]; // variável local para o alimento da balança 2
+  AB2 = posicaoVetorAB2[alimentosB2];
 
   lcd.setCursor(0, 0);
-  lcd.print("Alimento B2:    ");
+  lcd.print("Produto B2:     ");
   lcd.setCursor(0, 1);
   lcd.print(AB2);
   lcd.print("                ");
@@ -357,7 +354,7 @@ void estoqueMinimoBalancaUm() {
       posicaoVetorEMB1 = 4;
   }
 
-  EMB1 = posicaoVetorEMB1[estoqueMinimoB1], 3; // variável local para o estoque mínimo da balança 1
+  EMB1 = posicaoVetorEMB1[estoqueMinimoB1], 3;
 
   lcd.setCursor(0, 0);
   lcd.print("Est. Min. B1:   ");
@@ -389,7 +386,7 @@ void estoqueMinimoBalancaDois() {
       posicaoVetorEMB2 = 4;
   }
 
-  EMB2 = posicaoVetorEMB2[estoqueMinimoB2], 3; // variável local para o estoque mínimo da balança 2
+  EMB2 = posicaoVetorEMB2[estoqueMinimoB2], 3;
 
   lcd.setCursor(0, 0);
   lcd.print("Est. Min. B2:   ");
@@ -405,15 +402,15 @@ void dadosBalancas() {
   MAB2 = balanca2.get_units(), 3;
 
   lcd.setCursor(0, 0);
-  lcd.print("PB1 =  ");
-  lcd.setCursor(7, 0);
+  lcd.print("MB1 =  ");
+  lcd.setCursor(6, 0);
   lcd.print(MAB1, 2);
   lcd.setCursor(14, 0);
   lcd.print("kg");
 
   lcd.setCursor(0, 1);
-  lcd.print("PB2 =  ");
-  lcd.setCursor(7, 1);
+  lcd.print("MB2 =  ");
+  lcd.setCursor(6, 1);
   lcd.print(MAB2, 2);
   lcd.setCursor(14, 1);
   lcd.print("kg");
@@ -425,9 +422,9 @@ void zeraBalanca() {
   balanca1.tare();
   balanca2.tare();
   lcd.clear();
-  lcd.setCursor(4, 0);
-  lcd.print("Balancas");
-  lcd.setCursor(4, 1);
+  lcd.setCursor(3, 0);
+  lcd.print("Taras");
+  lcd.setCursor(3, 1);
   lcd.print("Zeradas!");
   delay(1500);
 }
@@ -451,7 +448,7 @@ void enviaDados() {
   if (client.connect(servidor, 80)) {
 
     client.println("POST /main.php HTTP/1.1");
-    client.println("Host: {char servidor[]}");
+    client.println("Host: {servidor}");
     client.println("Content-Type: application/x-www-form-urlencoded;");
     client.print("Content-Length: ");
     client.println(dadosPost.length());
